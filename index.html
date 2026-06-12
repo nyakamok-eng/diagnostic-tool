@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>頭パンパン4タイプ診断</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  background: #F9F8F6;
+  color: #2C2C2A;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* intro */
+.intro-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 28px;
+  text-align: center;
+  border: 1px solid #E8E6E1;
+}
+.intro-card h1 {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.intro-card .accent { color: #534AB7; }
+.intro-card p {
+  font-size: 14px;
+  color: #888780;
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+.intro-card .tag {
+  display: inline-block;
+  background: #EEEDFE;
+  color: #534AB7;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-start {
+  display: inline-block;
+  background: #534AB7;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 48px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-start:hover { background: #3C3489; }
+
+/* progress */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #E8E6E1;
+  border-radius: 2px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: #534AB7;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.q-counter {
+  font-size: 12px;
+  color: #888780;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* question */
+.question-text {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choice-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid #E8E6E1;
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #2C2C2A;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  font-family: inherit;
+}
+.choice-btn:hover {
+  border-color: #534AB7;
+  background: #FAFAFE;
+}
+.choice-btn.selected {
+  border-color: #534AB7;
+  background: #EEEDFE;
+}
+
+/* result */
+.result-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 28px;
+  border: 1px solid #E8E6E1;
+}
+.result-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.result-type-name {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.result-catch {
+  font-size: 14px;
+  color: #888780;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+.result-section {
+  margin-bottom: 24px;
+}
+.result-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #888780;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+.result-section ul {
+  list-style: none;
+  padding: 0;
+}
+.result-section li {
+  font-size: 14px;
+  line-height: 1.7;
+  padding: 4px 0 4px 20px;
+  position: relative;
+}
+.result-section li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.type-a li::before { background: #534AB7; }
+.type-b li::before { background: #0F6E56; }
+.type-c li::before { background: #D4537E; }
+.type-d li::before { background: #D85A30; }
+
+.result-strength {
+  background: #F9F8F6;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+}
+.result-strength-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.result-strength p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5F5E5A;
+}
+.result-key {
+  background: #EEEDFE;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+}
+.result-key-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #534AB7;
+  margin-bottom: 8px;
+}
+.result-key p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #3C3489;
+}
+
+.chart-section {
+  margin-bottom: 24px;
+}
+.chart-bar-group {
+  margin-bottom: 10px;
+}
+.chart-label {
+  font-size: 12px;
+  color: #888780;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+.chart-track {
+  width: 100%;
+  height: 8px;
+  background: #F1EFE8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.chart-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.btn-retry {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  border: 1.5px solid #E8E6E1;
+  border-radius: 30px;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888780;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.btn-retry:hover { border-color: #534AB7; color: #534AB7; }
+
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-card fade-in">
+      <div class="tag">8問 / 約2分</div>
+      <h1>あなたの<br><span class="accent">「頭パンパン」</span>は<br>どのタイプ?</h1>
+      <p>やることが多すぎて頭がパンク寸前...<br>
+        その原因は人によって違います。<br>
+        8つの質問で、あなたの思考パターンを診断します。</p>
+      <button class="btn-start" onclick="startQuiz()">診断スタート</button>
+    </div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="screen" id="screen-quiz">
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+    <div class="q-counter" id="q-counter"></div>
+    <div class="question-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div id="result-content"></div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "パソコンやスマホを開いたとき、最初にどうなる?",
+    choices: [
+      { type: "A", text: "気になったものに次々反応して、あれこれ触ってしまう" },
+      { type: "B", text: "やることが多すぎて、どれから手をつけるか決められない" },
+      { type: "C", text: "やらなきゃと思うほど不安になって、結局開けないこともある" },
+      { type: "D", text: "メール・DM・通知の対応から始まり、気づけば時間が消えている" }
+    ]
+  },
+  {
+    q: "やりたいことがあるとき、どうなりがち?",
+    choices: [
+      { type: "A", text: "すぐ飛びつくけど、途中で別のやりたいことが出てきて移ってしまう" },
+      { type: "B", text: "「自分がやらなきゃ」と抱え込んで、全部中途半端になる" },
+      { type: "C", text: "「失敗したらどうしよう」と考えすぎて、結局始められない" },
+      { type: "D", text: "スケジュールに入れるけど、既存タスクに押されて後回しになる" }
+    ]
+  },
+  {
+    q: "夜寝る前、頭の中はどんな状態?",
+    choices: [
+      { type: "A", text: "明日やりたいことのアイデアが次々浮かんで止まらない" },
+      { type: "B", text: "やり残したことのリストがぐるぐる回って眠れない" },
+      { type: "C", text: "「あれもできてない、これもダメだった」と自分を責めてしまう" },
+      { type: "D", text: "「明日もこのスケジュールか...」と疲労感だけが残っている" }
+    ]
+  },
+  {
+    q: "計画を立てるとき、どれが一番近い?",
+    choices: [
+      { type: "A", text: "ざっくり決めるけど、その通りにいったことがほぼない" },
+      { type: "B", text: "やることリストは書くけど、いつやるかまで決められない" },
+      { type: "C", text: "完璧な計画を作ろうとして、計画を立てること自体で止まる" },
+      { type: "D", text: "計画は立てられるけど、詰め込みすぎて毎回破綻する" }
+    ]
+  },
+  {
+    q: "人に頼むことについてどう思う?",
+    choices: [
+      { type: "A", text: "頼むより自分でやった方が早いし、自分でやりたい" },
+      { type: "B", text: "頼みたいけど、説明するのが面倒で結局自分でやる" },
+      { type: "C", text: "頼んだら迷惑かも、ちゃんとできないかも、と考えて頼めない" },
+      { type: "D", text: "頼みたいけど、どこまで任せていいか線引きが分からない" }
+    ]
+  },
+  {
+    q: "締め切り前日、どうなってる?",
+    choices: [
+      { type: "A", text: "こだわりすぎて終わっていない。でも火事場の集中力で何とかする" },
+      { type: "B", text: "他のタスクに追われて着手が遅れ、睡眠を削って帳尻合わせ" },
+      { type: "C", text: "「もうダメかも」と諦めかけるが、誰かに「大丈夫」と言われると動ける" },
+      { type: "D", text: "一応間に合うけど、毎回ギリギリで「このままでいいのか」と思う" }
+    ]
+  },
+  {
+    q: "SNSやビジネスの発信について、どれが近い?",
+    choices: [
+      { type: "A", text: "ネタもアイデアもあるのに、こだわって出せない" },
+      { type: "B", text: "発信より優先すべきことが多すぎて、手が回らない" },
+      { type: "C", text: "何を発信すればいいか分からず、他の人と比べて落ち込む" },
+      { type: "D", text: "やるべきだと分かっているが、更新が後回しになり続けている" }
+    ]
+  },
+  {
+    q: "「自分、このままじゃまずい」と感じるのはどんなとき?",
+    choices: [
+      { type: "A", text: "手をつけたまま放置しているものが増えてきたとき" },
+      { type: "B", text: "体調を崩して、やっと「無理してた」と気づいたとき" },
+      { type: "C", text: "周りがどんどん進んでいるのに自分だけ止まっていると感じたとき" },
+      { type: "D", text: "忙しいのに成果が伸びていないと気づいたとき" }
+    ]
+  }
+];
+
+const typeData = {
+  A: {
+    name: "感覚派クリエイター型",
+    color: "#534AB7",
+    bgColor: "#EEEDFE",
+    tagColor: "#534AB7",
+    catch: "アイデアは溢れるのに、形にならないもどかしさを抱えていませんか?",
+    symptoms: [
+      "やりたいことが次々湧いて、つい飛びついてしまう",
+      "タスクを「まるごと塊」で捉え、分解せずに動き出す",
+      "100%でないと出せない完璧主義で手が止まる",
+      "新しいツールに手をつけるが、構築しきる前に次へ行く",
+      "締め切りがあると動けるが、自分では設定できない"
+    ],
+    strength: "好奇心と行動力は最大の武器です。タスクが分解されれば驚くほど速く動けます。締め切りのある目標を設定し、「7割で出す」判断ができれば、一気に加速します。",
+    key: "必要なのは「分解」と「締め切り」。アイデアを実行可能な単位に細かくし、日程に落とし込む。完璧を目指さず「7割で出して寝かせる」習慣が突破口になります。"
+  },
+  B: {
+    name: "抱え込み型",
+    color: "#0F6E56",
+    bgColor: "#E1F5EE",
+    tagColor: "#0F6E56",
+    catch: "全部ひとりで背負って、頭の中が渋滞していませんか?",
+    symptoms: [
+      "複数の役割を同時に担い「自分でやったほうが早い」と思っている",
+      "頭の中で複数課題が渋滞し、どれが1番か分からない",
+      "やることリストはあるが、いつ・どこでやるかまで落とし込めない",
+      "計画の「量」は考えるが「構造・順序」を設計していない",
+      "睡眠を削ることへの抵抗感が薄く、体調悪化を繰り返す"
+    ],
+    strength: "整理されれば自分で言語化でき、実行力も高い人です。失敗を学習に変換する再解釈力も備わっています。「見える化」さえされれば、省ける行動・入れるべき行動を自分で判断できます。",
+    key: "必要なのは「構造化」と「見える化」。時間をブロックで捉え、タスクを配置する設計図を作ること。頭の中のタスクを外に出すだけで、「考えるスペース」が生まれます。"
+  },
+  C: {
+    name: "板挟み型",
+    color: "#D4537E",
+    bgColor: "#FBEAF0",
+    tagColor: "#D4537E",
+    catch: "やりたい気持ちはあるのに、感情に引っ張られて動けなくなっていませんか?",
+    symptoms: [
+      "問題と感情が頭の中で混ざり合い、何が問題か分からなくなる",
+      "まだ起きていない最悪のシナリオをリアルに想像して動けなくなる",
+      "「完璧にできないならやらない」という全か無か思考がある",
+      "他の人と比べて「遅れている」「足りない」と感じやすい",
+      "成長したい気持ちと家庭への罪悪感の間で揺れ続ける"
+    ],
+    strength: "思いやりが深く、小さな成功体験に素直に反応できる人です。「大丈夫、できる」と言ってもらえるとすぐ前向きになれる素直さがあります。メタ認知（自分の思考パターンへの気づき）が育てば、自立的に動ける力を持っています。",
+    key: "必要なのは「感情と問題の分離」と「60%の許可」。頭の中を外に出して言語化することで、問題と感情が分かれて見えてきます。「今これを考えなくていい」の仕分けが、思考の無駄遣いを一気に減らします。"
+  },
+  D: {
+    name: "ギリギリ派",
+    color: "#D85A30",
+    bgColor: "#FAECE7",
+    tagColor: "#D85A30",
+    catch: "仕事は回っている。でも常にギリギリで、このままでいいのかと感じていませんか?",
+    symptoms: [
+      "アイデアが連鎖的に広がり、抱えるプロジェクトが増え続ける",
+      "能力は高いが、タスク過多で構造的にギリギリ状態が常態化",
+      "年間スケジュールの俯瞰がなく「詰まってから気づく」を繰り返す",
+      "やるべきことの先送り（プロフィール更新・導線整備など）が積み重なる",
+      "1人では頭の中でぐるぐるするが、壁打ちがあると即決即行動"
+    ],
+    strength: "システム化・仕組み化が得意で、壁打ちで整理されると決断が速い人です。概念と数値の両方で考えられる柔軟な思考力があり、本来は「楽しいかどうか」で判断したいタイプ。整理の場があれば、1回で複数の決定・行動化が生まれます。",
+    key: "必要なのは「俯瞰の場」と「収束の仕組み」。年間を見渡すスケジュールと、定期的にアイデアを整理・優先順位づけする壁打ちの場があれば、義務感ではなく楽しさで動けるようになります。"
+  }
+};
+
+let currentQ = 0;
+let answers = { A: 0, B: 0, C: 0, D: 0 };
+
+function startQuiz() {
+  currentQ = 0;
+  answers = { A: 0, B: 0, C: 0, D: 0 };
+  showScreen("screen-quiz");
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById("progress").style.width = ((currentQ) / questions.length * 100) + "%";
+  document.getElementById("q-counter").textContent = "Q" + (currentQ + 1) + " / " + questions.length;
+  document.getElementById("q-text").textContent = q.q;
+
+  const container = document.getElementById("choices");
+  container.innerHTML = "";
+  container.className = "choices fade-in";
+
+  const shuffled = [...q.choices].sort(() => Math.random() - 0.5);
+
+  shuffled.forEach(c => {
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.textContent = c.text;
+    btn.onclick = () => selectAnswer(c.type, btn);
+    container.appendChild(btn);
+  });
+}
+
+function selectAnswer(type, btn) {
+  document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
+  btn.classList.add("selected");
+
+  answers[type]++;
+
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ < questions.length) {
+      renderQuestion();
+    } else {
+      document.getElementById("progress").style.width = "100%";
+      setTimeout(() => showResult(), 300);
+    }
+  }, 400);
+}
+
+function getResult() {
+  const sorted = Object.entries(answers).sort((a, b) => b[1] - a[1]);
+  if (sorted[0][1] === sorted[1][1]) {
+    const tieTypes = sorted.filter(s => s[1] === sorted[0][1]).map(s => s[0]);
+    const q1Type = questions[0].choices.find(c =>
+      tieTypes.includes(c.type)
+    );
+    const q2Type = questions[1].choices.find(c =>
+      tieTypes.includes(c.type)
+    );
+    if (q1Type) return q1Type.type;
+    if (q2Type) return q2Type.type;
+  }
+  return sorted[0][0];
+}
+
+function showResult() {
+  const resultType = getResult();
+  const data = typeData[resultType];
+  const total = Object.values(answers).reduce((a, b) => a + b, 0);
+
+  const typeClass = "type-" + resultType.toLowerCase();
+  const barColors = { A: "#534AB7", B: "#0F6E56", C: "#D4537E", D: "#D85A30" };
+  const typeNames = { A: "感覚派クリエイター型", B: "抱え込み型", C: "板挟み型", D: "ギリギリ派" };
+
+  let chartHTML = "";
+  const sortedAnswers = Object.entries(answers).sort((a, b) => b[1] - a[1]);
+  sortedAnswers.forEach(([t, count]) => {
+    const pct = Math.round(count / total * 100);
+    chartHTML += `
+      <div class="chart-bar-group">
+        <div class="chart-label">
+          <span>${typeNames[t]}${t === resultType ? " (あなた)" : ""}</span>
+          <span>${pct}%</span>
+        </div>
+        <div class="chart-track">
+          <div class="chart-fill" style="width: ${pct}%; background: ${barColors[t]};"></div>
+        </div>
+      </div>
+    `;
+  });
+
+  const html = `
+    <div class="result-card fade-in">
+      <div class="result-tag" style="background: ${data.bgColor}; color: ${data.tagColor};">あなたのタイプ</div>
+      <div class="result-type-name" style="color: ${data.color};">${data.name}</div>
+      <div class="result-catch">${data.catch}</div>
+
+      <div class="result-section ${typeClass}">
+        <div class="result-section-title">こんな状態になっていませんか?</div>
+        <ul>
+          ${data.symptoms.map(s => "<li>" + s + "</li>").join("")}
+        </ul>
+      </div>
+
+      <div class="result-strength">
+        <div class="result-strength-title">このタイプの強み</div>
+        <p>${data.strength}</p>
+      </div>
+
+      <div class="result-key" style="background: ${data.bgColor};">
+        <div class="result-key-title" style="color: ${data.tagColor};">パンク状態から抜け出すカギ</div>
+        <p style="color: ${data.color};">${data.key}</p>
+      </div>
+
+      <div class="chart-section">
+        <div class="result-section-title">あなたの傾向バランス</div>
+        ${chartHTML}
+      </div>
+
+      <button class="btn-retry" onclick="startQuiz()">もう一度診断する</button>
+    </div>
+  `;
+
+  document.getElementById("result-content").innerHTML = html;
+  showScreen("screen-result");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
