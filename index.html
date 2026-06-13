@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>頭パンパン4タイプ診断</title>
+<title>動けない人タイプ4診断</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -22,7 +22,6 @@ body {
 .screen { display: none; }
 .screen.active { display: block; }
 
-/* intro */
 .intro-card {
   background: #fff;
   border-radius: 16px;
@@ -49,7 +48,7 @@ body {
   color: #534AB7;
   font-size: 12px;
   font-weight: 600;
-  padding: 4px 14px;
+  padding: 6px 16px;
   border-radius: 20px;
   margin-bottom: 20px;
 }
@@ -68,7 +67,6 @@ body {
 }
 .btn-start:hover { background: #3C3489; }
 
-/* progress */
 .progress-bar {
   width: 100%;
   height: 4px;
@@ -90,7 +88,6 @@ body {
   font-weight: 600;
 }
 
-/* question */
 .question-text {
   font-size: 18px;
   font-weight: 700;
@@ -123,7 +120,6 @@ body {
   background: #EEEDFE;
 }
 
-/* result */
 .result-card {
   background: #fff;
   border-radius: 16px;
@@ -181,9 +177,9 @@ body {
 }
 
 .type-a li::before { background: #534AB7; }
-.type-b li::before { background: #0F6E56; }
+.type-b li::before { background: #D85A30; }
 .type-c li::before { background: #D4537E; }
-.type-d li::before { background: #D85A30; }
+.type-d li::before { background: #0F6E56; }
 
 .result-strength {
   background: #F9F8F6;
@@ -202,7 +198,6 @@ body {
   color: #5F5E5A;
 }
 .result-key {
-  background: #EEEDFE;
   border-radius: 10px;
   padding: 16px 18px;
   margin-bottom: 24px;
@@ -210,13 +205,11 @@ body {
 .result-key-title {
   font-size: 13px;
   font-weight: 700;
-  color: #534AB7;
   margin-bottom: 8px;
 }
 .result-key p {
   font-size: 14px;
   line-height: 1.7;
-  color: #3C3489;
 }
 
 .chart-section {
@@ -275,19 +268,17 @@ body {
 
 <div class="container">
 
-  <!-- INTRO -->
   <div class="screen active" id="screen-intro">
     <div class="intro-card fade-in">
       <div class="tag">8問 / 約2分</div>
-      <h1>あなたの<br><span class="accent">「頭パンパン」</span>は<br>どのタイプ?</h1>
-      <p>やることが多すぎて頭がパンク寸前...<br>
-        その原因は人によって違います。<br>
-        8つの質問で、あなたの思考パターンを診断します。</p>
+      <h1>あなたが<br><span class="accent">「動けない原因」</span>は<br>どのタイプ?</h1>
+      <p>やらなきゃいけないのに動けない。<br>
+        その原因は人によって全く違います。<br>
+        8つの質問で、あなたのパターンを診断します。</p>
       <button class="btn-start" onclick="startQuiz()">診断スタート</button>
     </div>
   </div>
 
-  <!-- QUESTIONS -->
   <div class="screen" id="screen-quiz">
     <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
     <div class="q-counter" id="q-counter"></div>
@@ -295,7 +286,6 @@ body {
     <div class="choices" id="choices"></div>
   </div>
 
-  <!-- RESULT -->
   <div class="screen" id="screen-result">
     <div id="result-content"></div>
   </div>
@@ -305,143 +295,155 @@ body {
 <script>
 const questions = [
   {
-    q: "パソコンやスマホを開いたとき、最初にどうなる?",
+    q: "朝起きてから家を出るまで、どうなりがち?",
     choices: [
-      { type: "A", text: "気になったものに次々反応して、あれこれ触ってしまう" },
-      { type: "B", text: "やることが多すぎて、どれから手をつけるか決められない" },
-      { type: "C", text: "やらなきゃと思うほど不安になって、結局開けないこともある" },
-      { type: "D", text: "メール・DM・通知の対応から始まり、気づけば時間が消えている" }
+      { type: "A", text: "バタバタしているうちに気づけば時間がなくなっている" },
+      { type: "B", text: "あれもこれも手をつけて、結局どれも中途半端になる" },
+      { type: "C", text: "やることが多すぎて、何から始めればいいか分からず止まる" },
+      { type: "D", text: "頭の中でやることを考えているうちに、時間だけが過ぎている" }
     ]
   },
   {
-    q: "やりたいことがあるとき、どうなりがち?",
+    q: "「今日は頑張ろう」と思った日、実際どうなる?",
     choices: [
-      { type: "A", text: "すぐ飛びつくけど、途中で別のやりたいことが出てきて移ってしまう" },
-      { type: "B", text: "「自分がやらなきゃ」と抱え込んで、全部中途半端になる" },
-      { type: "C", text: "「失敗したらどうしよう」と考えすぎて、結局始められない" },
-      { type: "D", text: "スケジュールに入れるけど、既存タスクに押されて後回しになる" }
+      { type: "A", text: "気づけば予定外のことに時間を使っていて、やりたかったことに手がつかない" },
+      { type: "B", text: "思いついた順に手をつけて、肝心なことが後回しになる" },
+      { type: "C", text: "全部やろうとしてパンクし、結局どれも進まない" },
+      { type: "D", text: "何から始めるかで迷っているうちに、やる気がなくなっている" }
+    ]
+  },
+  {
+    q: "スケジュール帳や手帳について、どれが近い?",
+    choices: [
+      { type: "A", text: "書いていない、または書いても見返さない" },
+      { type: "B", text: "やることは書くけど、いつやるかまでは決めていない" },
+      { type: "C", text: "詰め込みすぎて、毎回予定通りにいかない" },
+      { type: "D", text: "書く前に「何を書けばいいんだろう」と考え込んでしまう" }
     ]
   },
   {
     q: "夜寝る前、頭の中はどんな状態?",
     choices: [
-      { type: "A", text: "明日やりたいことのアイデアが次々浮かんで止まらない" },
-      { type: "B", text: "やり残したことのリストがぐるぐる回って眠れない" },
-      { type: "C", text: "「あれもできてない、これもダメだった」と自分を責めてしまう" },
-      { type: "D", text: "「明日もこのスケジュールか...」と疲労感だけが残っている" }
+      { type: "A", text: "「今日も何に時間を使ったか分からない」とモヤモヤする" },
+      { type: "B", text: "やりかけのことが気になって、つい手をつけてしまう" },
+      { type: "C", text: "「あれもやらなきゃ、これもやらなきゃ」が止まらない" },
+      { type: "D", text: "いろんなことが頭を巡って、整理がつかないまま眠れない" }
     ]
   },
   {
-    q: "計画を立てるとき、どれが一番近い?",
+    q: "タスクが溜まってきたとき、どうなる?",
     choices: [
-      { type: "A", text: "ざっくり決めるけど、その通りにいったことがほぼない" },
-      { type: "B", text: "やることリストは書くけど、いつやるかまで決められない" },
-      { type: "C", text: "完璧な計画を作ろうとして、計画を立てること自体で止まる" },
-      { type: "D", text: "計画は立てられるけど、詰め込みすぎて毎回破綻する" }
+      { type: "A", text: "どれくらい時間がかかるか見えず、とりあえず目の前のことをやる" },
+      { type: "B", text: "気になるものから片っ端に手をつけて、疲れて終わる" },
+      { type: "C", text: "全部大事に見えて、何を先にやるべきか決められない" },
+      { type: "D", text: "「一回整理しなきゃ」と思うけど、整理の仕方が分からない" }
     ]
   },
   {
-    q: "人に頼むことについてどう思う?",
+    q: "締め切りが近い仕事があるとき、どうなりがち?",
     choices: [
-      { type: "A", text: "頼むより自分でやった方が早いし、自分でやりたい" },
-      { type: "B", text: "頼みたいけど、説明するのが面倒で結局自分でやる" },
-      { type: "C", text: "頼んだら迷惑かも、ちゃんとできないかも、と考えて頼めない" },
-      { type: "D", text: "頼みたいけど、どこまで任せていいか線引きが分からない" }
-    ]
-  },
-  {
-    q: "締め切り前日、どうなってる?",
-    choices: [
-      { type: "A", text: "こだわりすぎて終わっていない。でも火事場の集中力で何とかする" },
-      { type: "B", text: "他のタスクに追われて着手が遅れ、睡眠を削って帳尻合わせ" },
-      { type: "C", text: "「もうダメかも」と諦めかけるが、誰かに「大丈夫」と言われると動ける" },
-      { type: "D", text: "一応間に合うけど、毎回ギリギリで「このままでいいのか」と思う" }
-    ]
-  },
-  {
-    q: "SNSやビジネスの発信について、どれが近い?",
-    choices: [
-      { type: "A", text: "ネタもアイデアもあるのに、こだわって出せない" },
-      { type: "B", text: "発信より優先すべきことが多すぎて、手が回らない" },
-      { type: "C", text: "何を発信すればいいか分からず、他の人と比べて落ち込む" },
-      { type: "D", text: "やるべきだと分かっているが、更新が後回しになり続けている" }
+      { type: "A", text: "「まだ時間ある」と思っていたら、ギリギリになっていた" },
+      { type: "B", text: "他のことにも手を出してしまい、締め切りの仕事に集中できない" },
+      { type: "C", text: "他にもやることがあって、どれを優先すべきか迷って焦る" },
+      { type: "D", text: "やるべきことは分かっているけど、段取りが整理できず着手が遅れる" }
     ]
   },
   {
     q: "「自分、このままじゃまずい」と感じるのはどんなとき?",
     choices: [
-      { type: "A", text: "手をつけたまま放置しているものが増えてきたとき" },
-      { type: "B", text: "体調を崩して、やっと「無理してた」と気づいたとき" },
-      { type: "C", text: "周りがどんどん進んでいるのに自分だけ止まっていると感じたとき" },
-      { type: "D", text: "忙しいのに成果が伸びていないと気づいたとき" }
+      { type: "A", text: "1日が終わったのに、何をしていたか思い出せないとき" },
+      { type: "B", text: "手をつけたまま放置していることが増えてきたとき" },
+      { type: "C", text: "周りがどんどん進んでいるのに、自分だけ止まっていると感じたとき" },
+      { type: "D", text: "考えれば考えるほど、何も決まらないと気づいたとき" }
+    ]
+  },
+  {
+    q: "誰かに「今、何に困ってる?」と聞かれたら?",
+    choices: [
+      { type: "A", text: "「とにかく時間がない」と答える" },
+      { type: "B", text: "「やりたいことはあるんだけど、うまく進められなくて」と答える" },
+      { type: "C", text: "「やることが多すぎて、何から手をつけていいか分からない」と答える" },
+      { type: "D", text: "「頭の中がごちゃごちゃで、うまく説明できない」と答える" }
     ]
   }
 ];
 
 const typeData = {
   A: {
-    name: "感覚派クリエイター型",
+    name: "「なんとなく忙しい」タイプ",
     color: "#534AB7",
     bgColor: "#EEEDFE",
     tagColor: "#534AB7",
-    catch: "アイデアは溢れるのに、形にならないもどかしさを抱えていませんか?",
+    catch: "毎日バタバタ。でも「何に時間を使ったか」と聞かれると、答えられない。",
     symptoms: [
-      "やりたいことが次々湧いて、つい飛びついてしまう",
-      "タスクを「まるごと塊」で捉え、分解せずに動き出す",
-      "100%でないと出せない完璧主義で手が止まる",
-      "新しいツールに手をつけるが、構築しきる前に次へ行く",
-      "締め切りがあると動けるが、自分では設定できない"
+      "「時間がない」が口癖だが、実際に何に使っているか把握していない",
+      "起床から出発までの時間に、使途不明の空白がある",
+      "「まだ時間ある」と思っていたら、いつもギリギリになっている",
+      "スケジュールを俯瞰して見たことがほとんどない",
+      "忙しいはずなのに、成果として残っていることが少ない"
     ],
-    strength: "好奇心と行動力は最大の武器です。タスクが分解されれば驚くほど速く動けます。締め切りのある目標を設定し、「7割で出す」判断ができれば、一気に加速します。",
-    key: "必要なのは「分解」と「締め切り」。アイデアを実行可能な単位に細かくし、日程に落とし込む。完璧を目指さず「7割で出して寝かせる」習慣が突破口になります。"
+    strength: "実行力も集中力も持っています。スイッチが入れば短時間で高いアウトプットを出せる人。時間の使い方が「見える」ようになるだけで、一気に動けるようになるタイプです。",
+    key: "あなたに必要なのは「まず今の時間の使い方を知ること」。感覚ではなく事実として自分の時間を見たとき、驚くほどの余白が見つかるかもしれません。",
+    keyBg: "#EEEDFE",
+    keyTitleColor: "#534AB7",
+    keyTextColor: "#3C3489"
   },
   B: {
-    name: "抱え込み型",
-    color: "#0F6E56",
-    bgColor: "#E1F5EE",
-    tagColor: "#0F6E56",
-    catch: "全部ひとりで背負って、頭の中が渋滞していませんか?",
-    symptoms: [
-      "複数の役割を同時に担い「自分でやったほうが早い」と思っている",
-      "頭の中で複数課題が渋滞し、どれが1番か分からない",
-      "やることリストはあるが、いつ・どこでやるかまで落とし込めない",
-      "計画の「量」は考えるが「構造・順序」を設計していない",
-      "睡眠を削ることへの抵抗感が薄く、体調悪化を繰り返す"
-    ],
-    strength: "整理されれば自分で言語化でき、実行力も高い人です。失敗を学習に変換する再解釈力も備わっています。「見える化」さえされれば、省ける行動・入れるべき行動を自分で判断できます。",
-    key: "必要なのは「構造化」と「見える化」。時間をブロックで捉え、タスクを配置する設計図を作ること。頭の中のタスクを外に出すだけで、「考えるスペース」が生まれます。"
-  },
-  C: {
-    name: "板挟み型",
-    color: "#D4537E",
-    bgColor: "#FBEAF0",
-    tagColor: "#D4537E",
-    catch: "やりたい気持ちはあるのに、感情に引っ張られて動けなくなっていませんか?",
-    symptoms: [
-      "問題と感情が頭の中で混ざり合い、何が問題か分からなくなる",
-      "まだ起きていない最悪のシナリオをリアルに想像して動けなくなる",
-      "「完璧にできないならやらない」という全か無か思考がある",
-      "他の人と比べて「遅れている」「足りない」と感じやすい",
-      "成長したい気持ちと家庭への罪悪感の間で揺れ続ける"
-    ],
-    strength: "思いやりが深く、小さな成功体験に素直に反応できる人です。「大丈夫、できる」と言ってもらえるとすぐ前向きになれる素直さがあります。メタ認知（自分の思考パターンへの気づき）が育てば、自立的に動ける力を持っています。",
-    key: "必要なのは「感情と問題の分離」と「60%の許可」。頭の中を外に出して言語化することで、問題と感情が分かれて見えてきます。「今これを考えなくていい」の仕分けが、思考の無駄遣いを一気に減らします。"
-  },
-  D: {
-    name: "ギリギリ派",
+    name: "「とりあえず動く」タイプ",
     color: "#D85A30",
     bgColor: "#FAECE7",
     tagColor: "#D85A30",
-    catch: "仕事は回っている。でも常にギリギリで、このままでいいのかと感じていませんか?",
+    catch: "行動力はある。でも気づけば、やりかけのものだらけになっていませんか?",
     symptoms: [
-      "アイデアが連鎖的に広がり、抱えるプロジェクトが増え続ける",
-      "能力は高いが、タスク過多で構造的にギリギリ状態が常態化",
-      "年間スケジュールの俯瞰がなく「詰まってから気づく」を繰り返す",
-      "やるべきことの先送り（プロフィール更新・導線整備など）が積み重なる",
-      "1人では頭の中でぐるぐるするが、壁打ちがあると即決即行動"
+      "思いついた順に手をつけて、肝心なことが後回しになる",
+      "タスクを「まるごと塊」で捉えて、分解せずに動き出す",
+      "新しいツールやアイデアに飛びつくが、構築しきる前に次へ行く",
+      "やりかけのものが気になって、夜もつい手をつけてしまう",
+      "締め切りがあると動けるが、自分では締め切りを設定できない"
     ],
-    strength: "システム化・仕組み化が得意で、壁打ちで整理されると決断が速い人です。概念と数値の両方で考えられる柔軟な思考力があり、本来は「楽しいかどうか」で判断したいタイプ。整理の場があれば、1回で複数の決定・行動化が生まれます。",
-    key: "必要なのは「俯瞰の場」と「収束の仕組み」。年間を見渡すスケジュールと、定期的にアイデアを整理・優先順位づけする壁打ちの場があれば、義務感ではなく楽しさで動けるようになります。"
+    strength: "好奇心と行動力は最大の武器。タスクが分解されて「今日はこれだけ」と決まれば、驚くほどのスピードで動ける人です。完了までの道筋が見えれば、その行動力が全て成果に変わります。",
+    key: "あなたに必要なのは「動く前に分ける」こと。やりたいことを実行可能な単位に細かくし、日程に配置する。それだけで、あなたの行動力がちゃんと成果につながるようになります。",
+    keyBg: "#FAECE7",
+    keyTitleColor: "#D85A30",
+    keyTextColor: "#993C1D"
+  },
+  C: {
+    name: "「あれもこれも」タイプ",
+    color: "#D4537E",
+    bgColor: "#FBEAF0",
+    tagColor: "#D4537E",
+    catch: "やるべきことは山ほどある。でも全部大事に見えて、1つに絞れない。",
+    symptoms: [
+      "全部やろうとしてスケジュールに詰め込みすぎてしまう",
+      "何が一番大事か分からず、気になった順で動いてしまう",
+      "「あの人はもっと進んでいるのに」と比べて焦りだけが募る",
+      "細部の心配から入って、全体像を見失いやすい",
+      "周りに相談したいけど、何から話していいか分からない"
+    ],
+    strength: "やりたいことがたくさんあるのは、意欲と可能性の証拠。「これだけやればいい」と絞れた瞬間、一気に動ける素直さとエネルギーを持っている人です。",
+    key: "あなたに必要なのは「やらないことを決める勇気」。全部やるのではなく、目的から逆算して「今はこれだけ」と絞ること。心が驚くほど軽くなります。",
+    keyBg: "#FBEAF0",
+    keyTitleColor: "#D4537E",
+    keyTextColor: "#72243E"
+  },
+  D: {
+    name: "「頭の中ぐるぐる」タイプ",
+    color: "#0F6E56",
+    bgColor: "#E1F5EE",
+    tagColor: "#0F6E56",
+    catch: "能力はある。やる気もある。でも頭の中が渋滞して、動き出せない。",
+    symptoms: [
+      "考えれば考えるほど選択肢が増えて、何も決まらない",
+      "1人で考えていると堂々巡りになり、結論が出ない",
+      "アイデアは豊富だが、どこから手をつけるかで止まる",
+      "頭の中にタスクが溜まると、思考スペースがなくなる感覚がある",
+      "誰かに話を聞いてもらうと、一気に整理がつくことが多い"
+    ],
+    strength: "本来は決断力も実行力も高い人。壁打ち相手がいるだけで即決即行動に移れるタイプです。頭の中を外に出す仕組みがあれば、あなたの能力がフルに発揮されます。",
+    key: "あなたに必要なのは「頭の中を外に出す場」。1人で整理しようとせず、思考を可視化すること。それだけで渋滞が解消され、本来の判断力が戻ってきます。",
+    keyBg: "#E1F5EE",
+    keyTitleColor: "#0F6E56",
+    keyTextColor: "#04342C"
   }
 };
 
@@ -484,7 +486,6 @@ function renderQuestion() {
 function selectAnswer(type, btn) {
   document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
-
   answers[type]++;
 
   setTimeout(() => {
@@ -502,12 +503,8 @@ function getResult() {
   const sorted = Object.entries(answers).sort((a, b) => b[1] - a[1]);
   if (sorted[0][1] === sorted[1][1]) {
     const tieTypes = sorted.filter(s => s[1] === sorted[0][1]).map(s => s[0]);
-    const q1Type = questions[0].choices.find(c =>
-      tieTypes.includes(c.type)
-    );
-    const q2Type = questions[1].choices.find(c =>
-      tieTypes.includes(c.type)
-    );
+    const q1Type = questions[0].choices.find(c => tieTypes.includes(c.type));
+    const q2Type = questions[1].choices.find(c => tieTypes.includes(c.type));
     if (q1Type) return q1Type.type;
     if (q2Type) return q2Type.type;
   }
@@ -520,57 +517,35 @@ function showResult() {
   const total = Object.values(answers).reduce((a, b) => a + b, 0);
 
   const typeClass = "type-" + resultType.toLowerCase();
-  const barColors = { A: "#534AB7", B: "#0F6E56", C: "#D4537E", D: "#D85A30" };
-  const typeNames = { A: "感覚派クリエイター型", B: "抱え込み型", C: "板挟み型", D: "ギリギリ派" };
+  const barColors = { A: "#534AB7", B: "#D85A30", C: "#D4537E", D: "#0F6E56" };
+  const typeNames = {
+    A: "「なんとなく忙しい」タイプ",
+    B: "「とりあえず動く」タイプ",
+    C: "「あれもこれも」タイプ",
+    D: "「頭の中ぐるぐる」タイプ"
+  };
 
   let chartHTML = "";
   const sortedAnswers = Object.entries(answers).sort((a, b) => b[1] - a[1]);
   sortedAnswers.forEach(([t, count]) => {
     const pct = Math.round(count / total * 100);
-    chartHTML += `
-      <div class="chart-bar-group">
-        <div class="chart-label">
-          <span>${typeNames[t]}${t === resultType ? " (あなた)" : ""}</span>
-          <span>${pct}%</span>
-        </div>
-        <div class="chart-track">
-          <div class="chart-fill" style="width: ${pct}%; background: ${barColors[t]};"></div>
-        </div>
-      </div>
-    `;
+    chartHTML += '<div class="chart-bar-group"><div class="chart-label"><span>' +
+      typeNames[t] + (t === resultType ? " (あなた)" : "") +
+      '</span><span>' + pct + '%</span></div><div class="chart-track"><div class="chart-fill" style="width:' +
+      pct + '%;background:' + barColors[t] + ';"></div></div></div>';
   });
 
-  const html = `
-    <div class="result-card fade-in">
-      <div class="result-tag" style="background: ${data.bgColor}; color: ${data.tagColor};">あなたのタイプ</div>
-      <div class="result-type-name" style="color: ${data.color};">${data.name}</div>
-      <div class="result-catch">${data.catch}</div>
-
-      <div class="result-section ${typeClass}">
-        <div class="result-section-title">こんな状態になっていませんか?</div>
-        <ul>
-          ${data.symptoms.map(s => "<li>" + s + "</li>").join("")}
-        </ul>
-      </div>
-
-      <div class="result-strength">
-        <div class="result-strength-title">このタイプの強み</div>
-        <p>${data.strength}</p>
-      </div>
-
-      <div class="result-key" style="background: ${data.bgColor};">
-        <div class="result-key-title" style="color: ${data.tagColor};">パンク状態から抜け出すカギ</div>
-        <p style="color: ${data.color};">${data.key}</p>
-      </div>
-
-      <div class="chart-section">
-        <div class="result-section-title">あなたの傾向バランス</div>
-        ${chartHTML}
-      </div>
-
-      <button class="btn-retry" onclick="startQuiz()">もう一度診断する</button>
-    </div>
-  `;
+  const html = '<div class="result-card fade-in">' +
+    '<div class="result-tag" style="background:' + data.bgColor + ';color:' + data.tagColor + ';">あなたのタイプ</div>' +
+    '<div class="result-type-name" style="color:' + data.color + ';">' + data.name + '</div>' +
+    '<div class="result-catch">' + data.catch + '</div>' +
+    '<div class="result-section ' + typeClass + '"><div class="result-section-title">こんな状態になっていませんか?</div><ul>' +
+    data.symptoms.map(function(s) { return "<li>" + s + "</li>"; }).join("") +
+    '</ul></div>' +
+    '<div class="result-strength"><div class="result-strength-title">このタイプの強み</div><p>' + data.strength + '</p></div>' +
+    '<div class="result-key" style="background:' + data.keyBg + ';"><div class="result-key-title" style="color:' + data.keyTitleColor + ';">動き出すためのヒント</div><p style="color:' + data.keyTextColor + ';">' + data.key + '</p></div>' +
+    '<div class="chart-section"><div class="result-section-title">あなたの傾向バランス</div>' + chartHTML + '</div>' +
+    '<button class="btn-retry" onclick="startQuiz()">もう一度診断する</button></div>';
 
   document.getElementById("result-content").innerHTML = html;
   showScreen("screen-result");
