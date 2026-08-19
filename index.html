@@ -238,6 +238,45 @@ body {
   transition: width 0.6s ease;
 }
 
+.cta-section {
+  background: linear-gradient(135deg, #534AB7 0%, #6B5CE7 100%);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.cta-section .cta-lead {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+.cta-section .cta-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.cta-section .cta-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 20px;
+}
+.btn-cta {
+  display: inline-block;
+  background: #fff;
+  color: #534AB7;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 14px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+
 .btn-retry {
   display: block;
   width: 100%;
@@ -545,6 +584,10 @@ function showResult() {
     '<div class="result-strength"><div class="result-strength-title">このタイプの強み</div><p>' + data.strength + '</p></div>' +
     '<div class="result-key" style="background:' + data.keyBg + ';"><div class="result-key-title" style="color:' + data.keyTitleColor + ';">動き出すためのヒント</div><p style="color:' + data.keyTextColor + ';">' + data.key + '</p></div>' +
     '<div class="chart-section"><div class="result-section-title">あなたの傾向バランス</div>' + chartHTML + '</div>' +
+    '<div class="cta-section"><div class="cta-lead">自分のタイプが分かったら、次は<br>「どう動けばいいか」を一緒に整理しませんか?</div>' +
+    '<div class="cta-title">目標達成ミーティング</div>' +
+    '<div class="cta-sub">無料 / オンライン / 約60分</div>' +
+    '<a class="btn-cta" href="https://liff.line.me/2008633689-P4B1VRJY?calendar_id=8285&ts=1787110724" target="_blank" rel="noopener">日程を予約する</a></div>' +
     '<button class="btn-retry" onclick="startQuiz()">もう一度診断する</button></div>';
 
   document.getElementById("result-content").innerHTML = html;
